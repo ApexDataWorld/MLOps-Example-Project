@@ -92,23 +92,40 @@ def main():
         'service_principal_id': os.environ['SPN_ID'],
         'service_principal_password': os.environ['SPN_PASSWORD'],
     }
+    print(storage_acct_name)
+    print(storage_acct_key)
+    print(workspace_name)
+    print(resource_group)
+    print(subscription_id)
+    print(spn_credentials)
+
     # Instantiate Blob Storage Interface
     blob_storage_interface = BlobStorageInterface(
         storage_acct_name, storage_acct_key
     )
 
+    print("blob_storage_interface completed")
+    print("CreateClassificationData started")
+
     # Create and Upload data to Blob Store
     data_creator = CreateClassificationData()
+    print("CreateClassificationData completed")
+    print("upload_data started")
     data_creator.upload_data(blob_storage_interface)
+    print("upload_data completed")
+    print("AMLInterface started")
 
     # Register Blob Store to AML
     aml_interface = AMLInterface(
         spn_credentials, subscription_id, workspace_name, resource_group
     )
+    print("AMLInterface completed")
+    print("register_datastore started")
     aml_interface.register_datastore(
         TRAINING_CONTAINER, TRAINING_DATASTORE,
         storage_acct_name, storage_acct_key
     )
+    print("register_datastore completed")
 
 if __name__ == '__main__':
     main()
